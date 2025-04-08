@@ -12,19 +12,21 @@ export default function StudentApp() {
   }, []);
 
   const fetchStudents = async () => {
-    const { data } = await axios.get("https://server-fazg.onrender.com/api/students");
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/students`
+    );
     setStudents(data);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("https://server-fazg.onrender.com/api/students", form);
+    await axios.post(`${import.meta.env.VITE_API_URL}/api/students`, form);
     setForm({ name: "", age: "", city: "" });
     fetchStudents();
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`https://server-fazg.onrender.com/api/students/${id}`);
+    await axios.delete(`${import.meta.env.VITE_API_URL}/api/students/${id}`);
     fetchStudents();
   };
 
@@ -62,7 +64,7 @@ export default function StudentApp() {
         </form>
       </div>
 
-       <div className="students-list-container">
+      <div className="students-list-container">
         <h2 className="students-list-header">📋 Students List</h2>
         {students.length === 0 ? (
           <p className="no-students">No students available.</p>
