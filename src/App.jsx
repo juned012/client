@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaTrashAlt, FaUserPlus } from "react-icons/fa";
-import './App.css';  
+import "./App.css";
 
 export default function StudentApp() {
   const [students, setStudents] = useState([]);
@@ -12,19 +12,19 @@ export default function StudentApp() {
   }, []);
 
   const fetchStudents = async () => {
-    const { data } = await axios.get("http://localhost:5000/api/students");
+    const { data } = await axios.get("https://server-fazg.onrender.com");
     setStudents(data);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:5000/api/students", form);
+    await axios.post("https://server-fazg.onrender.com", form);
     setForm({ name: "", age: "", city: "" });
     fetchStudents();
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/api/students/${id}`);
+    await axios.delete(`https://server-fazg.onrender.com/${id}`);
     fetchStudents();
   };
 
@@ -72,7 +72,8 @@ export default function StudentApp() {
             {students.map((student) => (
               <div key={student.id} className="student-item">
                 <span className="student-info">
-                  {student.name} <span className="age">({student.age})</span> - {student.city}
+                  {student.name} <span className="age">({student.age})</span> -{" "}
+                  {student.city}
                 </span>
                 <button
                   onClick={() => handleDelete(student.id)}

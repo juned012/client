@@ -1,5 +1,4 @@
-/* General Styles */
-* {
+ * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -43,8 +42,7 @@ h2 {
   color: #4caf50;
 }
 
-/* Form Styling */
-.form-container {
+ .form-container {
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 8px;
@@ -68,6 +66,8 @@ h2 {
 .form input {
   padding: 10px;
   margin: 10px 0;
+  background: white;
+  color: black;
   border-radius: 5px;
   border: 1px solid #ddd;
   font-size: 1rem;
@@ -94,8 +94,7 @@ h2 {
   background-color: #45a049;
 }
 
-/* Students List Styling */
-.students-list-container {
+ .students-list-container {
   margin-top: 40px;
 }
 
@@ -157,8 +156,7 @@ h2 {
   margin-right: 5px;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+ @media (max-width: 768px) {
   .container {
     padding: 15px;
   }
