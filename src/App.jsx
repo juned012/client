@@ -1,6 +1,6 @@
 import { FaUserPlus, FaListAlt } from "react-icons/fa";
 import { PiStudent } from "react-icons/pi";
-
+import { MdOutlineDateRange, MdOutlineLocationCity } from "react-icons/md";
 import StudentCard from "./components/StudentCard";
 const App = () => {
   const handleSubmit = (e) => {
@@ -19,24 +19,40 @@ const App = () => {
               <FaUserPlus /> Add Student
             </h1>
             <form onSubmit={handleSubmit} className="form">
-              <input
-                type="text"
-                placeholder="Student Name"
-                required
-                className="w-full p-3 rounded-md outline-none bg-white mb-3"
-              />
-              <input
-                type="number"
-                placeholder="Age"
-                required
-                className="w-full p-3 rounded-md outline-none bg-white mb-3"
-              />
-              <input
-                type="text"
-                placeholder="City"
-                required
-                className="w-full p-3 rounded-md outline-none bg-white mb-3"
-              />
+              <div className="bg-white mb-3 rounded-md relative">
+                <input
+                  type="text"
+                  placeholder="Student Name"
+                  required
+                  className="w-full p-3 outline-none"
+                />
+                <h2 className="absolute top-4 right-4">
+                  <PiStudent className="text-gray-500" />
+                </h2>
+              </div>
+              <div className="bg-white mb-3 rounded-md relative">
+                <input
+                  type="number"
+                  placeholder="Age"
+                  required
+                  className="w-full p-3 outline-none"
+                />
+                <h2 className="absolute top-4 right-4">
+                  <MdOutlineDateRange className="text-gray-500" />
+                </h2>
+              </div>
+
+              <div className="bg-white mb-3 rounded-md relative">
+                <input
+                  type="text"
+                  placeholder="City"
+                  required
+                  className="w-full p-3 outline-none"
+                />
+                <h2 className="absolute top-4 right-4">
+                  <MdOutlineLocationCity className="text-gray-500" />
+                </h2>
+              </div>
               <button
                 type="submit"
                 className="bg-green-900 hover:bg-green-950 flex items-center justify-center gap-2 rounded-md text-white px-10 py-4 w-full cursor-pointer mb-5"
