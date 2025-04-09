@@ -2,11 +2,12 @@ import { FaUserPlus, FaListAlt } from "react-icons/fa";
 import { PiStudent, PiCloudWarningThin } from "react-icons/pi";
 import { MdOutlineDateRange, MdOutlineLocationCity } from "react-icons/md";
 import StudentCard from "./components/StudentCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const App = () => {
   const [formData, setFormData] = useState({
-    studentName: "",
+    name: "",
     age: "",
     city: "",
   });
@@ -14,13 +15,38 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setStudents((prevStudents) => [...prevStudents, formData]);
+
+    axios
+      .post(`${import.meta.env.VITE_API_URL}/api/students`, formData)
+      .then((res) => {
+        console.log("Data saved");
+        getAllStudents();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     setFormData({
-      studentName: "",
+      name: "",
       age: "",
       city: "",
     });
   };
+
+  const getAllStudents = () => {
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/students`)
+      .then((res) => {
+        setStudents(res.data.students);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getAllStudents();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,7 +54,15 @@ const App = () => {
   };
 
   const handleDeleteStudent = (index) => {
-    console.log(index);
+    axios
+      .delete(`${import.meta.env.VITE_API_URL}/api/students/${index}`)
+      .then((res) => {
+        console.log("Student Deleted");
+        getAllStudents();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -45,8 +79,8 @@ const App = () => {
             <form onSubmit={handleSubmit} className="form">
               <div className="bg-white mb-3 rounded-md relative">
                 <input
-                  name="studentName"
-                  value={formData.studentName}
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
                   type="text"
                   placeholder="Student Name"
@@ -110,11 +144,11 @@ const App = () => {
             ) : (
               <div className="grid grid-cols-2 gap-3">
                 {students.map((student, index) => {
-                  const { studentName, age, city } = student;
+                  const { name, age, city } = student;
                   return (
                     <StudentCard
                       key={index}
-                      studentName={studentName}
+                      name={name}
                       age={age}
                       city={city}
                       index={index}

@@ -5,17 +5,11 @@ import {
 } from "react-icons/md";
 import { PiStudent } from "react-icons/pi";
 
-const StudentCard = ({
-  index,
-  studentName,
-  age,
-  city,
-  handleDeleteStudent,
-}) => {
+const StudentCard = ({ index, name, age, city, handleDeleteStudent }) => {
   return (
     <div className="bg-white p-2 px-4 rounded-md relative">
       <h1 className="font-semibold text-xl flex items-center gap-2">
-        <PiStudent /> {studentName}
+        <PiStudent /> {name}
       </h1>
       <h4 className="flex items-center gap-2 mt-1">
         <MdOutlineDateRange /> {age}
