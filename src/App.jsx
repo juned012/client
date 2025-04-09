@@ -1,10 +1,34 @@
 import { FaUserPlus, FaListAlt } from "react-icons/fa";
-import { PiStudent } from "react-icons/pi";
+import { PiStudent, PiCloudWarningThin } from "react-icons/pi";
 import { MdOutlineDateRange, MdOutlineLocationCity } from "react-icons/md";
 import StudentCard from "./components/StudentCard";
+import { useState } from "react";
+
 const App = () => {
+  const [formData, setFormData] = useState({
+    studentName: "",
+    age: "",
+    city: "",
+  });
+  const [students, setStudents] = useState([]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setStudents((prevStudents) => [...prevStudents, formData]);
+    setFormData({
+      studentName: "",
+      age: "",
+      city: "",
+    });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevForm) => ({ ...prevForm, [name]: value }));
+  };
+
+  const handleDeleteStudent = (index) => {
+    console.log(index);
   };
 
   return (
@@ -21,6 +45,9 @@ const App = () => {
             <form onSubmit={handleSubmit} className="form">
               <div className="bg-white mb-3 rounded-md relative">
                 <input
+                  name="studentName"
+                  value={formData.studentName}
+                  onChange={handleInputChange}
                   type="text"
                   placeholder="Student Name"
                   required
@@ -32,6 +59,9 @@ const App = () => {
               </div>
               <div className="bg-white mb-3 rounded-md relative">
                 <input
+                  name="age"
+                  value={formData.age}
+                  onChange={handleInputChange}
                   type="number"
                   placeholder="Age"
                   required
@@ -44,6 +74,9 @@ const App = () => {
 
               <div className="bg-white mb-3 rounded-md relative">
                 <input
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
                   type="text"
                   placeholder="City"
                   required
@@ -69,10 +102,28 @@ const App = () => {
             <h1 className="text-green-900 text-3xl font-bold text-center py-8 flex justify-center items-center gap-2">
               <FaListAlt /> Student List
             </h1>
-            <div className="grid grid-cols-2 gap-3">
-              <StudentCard />
-              <StudentCard />
-            </div>
+            {students.length === 0 ? (
+              <div className="flex justify-center flex-col items-center text-gray-600 h-[220px]">
+                <PiCloudWarningThin className="text-3xl" />
+                <p>No Student Found!</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-3">
+                {students.map((student, index) => {
+                  const { studentName, age, city } = student;
+                  return (
+                    <StudentCard
+                      key={index}
+                      studentName={studentName}
+                      age={age}
+                      city={city}
+                      index={index}
+                      handleDeleteStudent={handleDeleteStudent}
+                    />
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>
