@@ -1,6 +1,7 @@
 import { FaUserPlus, FaListAlt } from "react-icons/fa";
-import { MdDeleteOutline } from "react-icons/md";
+import { PiStudent } from "react-icons/pi";
 
+import StudentCard from "./components/StudentCard";
 const App = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,7 +14,7 @@ const App = () => {
           🎓 Student Management
         </h1>
         <div className="flex gap-10">
-          <div className="flex-1/2 bg-gray-200 rounded-md px-10 py-2">
+          <div className="flex-1/2 bg-gray-200 rounded-md px-10 py-2 h-[420px]">
             <h1 className="text-green-900 text-3xl font-bold text-center py-8 flex justify-center items-center gap-2">
               <FaUserPlus /> Add Student
             </h1>
@@ -38,28 +39,23 @@ const App = () => {
               />
               <button
                 type="submit"
-                className="bg-green-900 rounded-md text-white px-10 py-4 w-full cursor-pointer mb-5"
+                className="bg-green-900 hover:bg-green-950 flex items-center justify-center gap-2 rounded-md text-white px-10 py-4 w-full cursor-pointer mb-5"
               >
-                Add Student
+                <PiStudent className="text-xl" /> Add Student
               </button>
+              <p className="mt-1 text-center text-gray-600 font-semibold text-sm">
+                Add a student to list and store it into database
+              </p>
             </form>
           </div>
 
-          <div className="flex-2/3 bg-gray-200 rounded-md px-10 py-2">
+          <div className="flex-2/3 bg-gray-200 rounded-md px-10 py-2 h-[420px] overflow-y-auto">
             <h1 className="text-green-900 text-3xl font-bold text-center py-8 flex justify-center items-center gap-2">
               <FaListAlt /> Student List
             </h1>
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-white p-2 px-4 rounded-md relative">
-                <h1 className="font-semibold">Student Name</h1>
-                <h4>Age</h4>
-                <h4>City</h4>
-                <div className="absolute bottom-1 right-3">
-                  <button className="bg-red-500 p-2 rounded-full text-white cursor-pointer hover:bg-red-600">
-                    <MdDeleteOutline />
-                  </button>
-                </div>
-              </div>
+              <StudentCard />
+              <StudentCard />
             </div>
           </div>
         </div>
