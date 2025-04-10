@@ -41,7 +41,7 @@ const App = () => {
             student.id === updatedStudent.id ? updatedStudent : student
           );
         });
-
+        setEditAge(false);
         setEditText(false);
         setFormData({
           name: "",
