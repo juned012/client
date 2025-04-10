@@ -1,13 +1,21 @@
 import {
   MdDeleteOutline,
+  MdEdit,
   MdOutlineDateRange,
   MdOutlineLocationCity,
 } from "react-icons/md";
 import { PiStudent } from "react-icons/pi";
 
-const StudentCard = ({ index, name, age, city, handleDeleteStudent }) => {
+const StudentCard = ({
+  id,
+  name,
+  age,
+  city,
+  handleDeleteStudent,
+  handleEditStudent,
+}) => {
   return (
-    <div className="bg-white p-2 px-4 rounded-md relative">
+    <div className="bg-white p-2 px-4 rounded-md">
       <h1 className="font-semibold text-xl flex items-center gap-2">
         <PiStudent /> {name}
       </h1>
@@ -17,9 +25,15 @@ const StudentCard = ({ index, name, age, city, handleDeleteStudent }) => {
       <h4 className="flex items-center gap-2 mt-1">
         <MdOutlineLocationCity /> {city}
       </h4>
-      <div className="absolute bottom-1 right-3">
+      <div className="flex gap-2 my-2">
         <button
-          onClick={() => handleDeleteStudent(index)}
+          onClick={() => handleEditStudent(id)}
+          className="bg-green-500 font-bold p-2 rounded-full text-white cursor-pointer hover:bg-green-600"
+        >
+          <MdEdit />
+        </button>
+        <button
+          onClick={() => handleDeleteStudent(id)}
           className="bg-red-500 font-bold p-2 rounded-full text-white cursor-pointer hover:bg-red-600"
         >
           <MdDeleteOutline />

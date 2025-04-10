@@ -12,25 +12,59 @@ const App = () => {
     city: "",
   });
   const [students, setStudents] = useState([]);
-
-  const handleSubmit = (e) => {
+  const [editText, setEditText] = useState(false);
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    axios
-      .post(`${import.meta.env.VITE_API_URL}/api/students`, formData)
-      .then((res) => {
-        console.log("Data saved");
-        getAllStudents();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (formData.id) {
+      try {
+        const response = await axios.put(
+          `${import.meta.env.VITE_API_URL}/api/students/${formData.id}`,
+          formData
+        );
 
+        const updatedStudent = response.data.updatedStudent;
+
+        setStudents((prevStudents) => {
+          return prevStudents.map((student) =>
+            student.id === updatedStudent.id ? updatedStudent : student
+          );
+        });
+        setEditText(false);
+        setFormData({
+          name: "",
+          age: "",
+          city: "",
+        });
+      } catch (error) {
+        console.log("Error updating student:", error);
+      }
+    } else {
+      try {
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/students`,
+          formData
+        );
+        getAllStudents();
+        setFormData({
+          name: "",
+          age: "",
+          city: "",
+        });
+      } catch (error) {
+        console.log("Error saving student:", error);
+      }
+    }
+  };
+  const handleEditStudent = (id) => {
+    const std = students.find((student) => student.id === id);
     setFormData({
-      name: "",
-      age: "",
-      city: "",
+      id: std.id,
+      name: std.name,
+      age: std.age,
+      city: std.city,
     });
+    setEditText(true);
   };
 
   const getAllStudents = () => {
@@ -53,9 +87,9 @@ const App = () => {
     setFormData((prevForm) => ({ ...prevForm, [name]: value }));
   };
 
-  const handleDeleteStudent = (index) => {
+  const handleDeleteStudent = (id) => {
     axios
-      .delete(`${import.meta.env.VITE_API_URL}/api/students/${index}`)
+      .delete(`${import.meta.env.VITE_API_URL}/api/students/${id}`)
       .then((res) => {
         console.log("Student Deleted");
         getAllStudents();
@@ -74,7 +108,7 @@ const App = () => {
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
           <div className="w-full lg:w-1/2 bg-gray-200 rounded-md px-5 md:px-10 py-2 h-auto md:h-[420px] mb-6 lg:mb-0">
             <h1 className="text-green-900 text-3xl font-bold text-center py-8 flex justify-center items-center gap-2">
-              <FaUserPlus /> Add Student
+              <FaUserPlus /> {editText ? "Update Student" : "Add Student"}
             </h1>
             <form onSubmit={handleSubmit} className="form">
               <div className="bg-white mb-3 rounded-md relative">
@@ -124,7 +158,8 @@ const App = () => {
                 type="submit"
                 className="bg-green-900 hover:bg-green-950 flex items-center justify-center gap-2 rounded-md text-white px-10 py-4 w-full cursor-pointer mb-5"
               >
-                <PiStudent className="text-xl" /> Add Student
+                <PiStudent className="text-xl" />
+                {editText ? "Update Student" : "Add Student"}
               </button>
               <p className="mt-1 text-center text-gray-600 font-semibold text-sm">
                 Add a student to list and store it into database
@@ -143,16 +178,17 @@ const App = () => {
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-3">
-                {students.map((student, index) => {
-                  const { name, age, city } = student;
+                {students.map((student) => {
+                  const { id, name, age, city } = student;
                   return (
                     <StudentCard
-                      key={index}
+                      key={id}
                       name={name}
                       age={age}
                       city={city}
-                      index={index}
+                      id={id}
                       handleDeleteStudent={handleDeleteStudent}
+                      handleEditStudent={handleEditStudent}
                     />
                   );
                 })}
