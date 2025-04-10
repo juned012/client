@@ -1,4 +1,5 @@
 import {
+  MdDateRange,
   MdDeleteOutline,
   MdEdit,
   MdOutlineDateRange,
@@ -13,6 +14,7 @@ const StudentCard = ({
   city,
   handleDeleteStudent,
   handleEditStudent,
+  handleStudentAge,
 }) => {
   return (
     <div className="bg-white p-2 px-4 rounded-md">
@@ -26,6 +28,12 @@ const StudentCard = ({
         <MdOutlineLocationCity /> {city}
       </h4>
       <div className="flex gap-2 my-2">
+        <button
+          onClick={() => handleStudentAge(id)}
+          className="bg-blue-500 font-bold p-2 rounded-full text-white cursor-pointer hover:bg-blue-600"
+        >
+          <MdDateRange />
+        </button>
         <button
           onClick={() => handleEditStudent(id)}
           className="bg-green-500 font-bold p-2 rounded-full text-white cursor-pointer hover:bg-green-600"

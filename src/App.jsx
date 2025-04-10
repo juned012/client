@@ -11,17 +11,28 @@ const App = () => {
     age: "",
     city: "",
   });
+
   const [students, setStudents] = useState([]);
   const [editText, setEditText] = useState(false);
+  const [editAge, setEditAge] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.id) {
       try {
-        const response = await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/students/${formData.id}`,
-          formData
-        );
+        let response;
+        if (formData.age && !formData.name && !formData.city) {
+          response = await axios.patch(
+            `${import.meta.env.VITE_API_URL}/api/students/${formData.id}`,
+            { age: formData.age }
+          );
+        } else {
+          response = await axios.put(
+            `${import.meta.env.VITE_API_URL}/api/students/${formData.id}`,
+            formData
+          );
+        }
 
         const updatedStudent = response.data.updatedStudent;
 
@@ -30,13 +41,14 @@ const App = () => {
             student.id === updatedStudent.id ? updatedStudent : student
           );
         });
+
         setEditText(false);
         setFormData({
           name: "",
           age: "",
           city: "",
         });
-      } catch (error) {
+      } catch {
         console.log("Error updating student:", error);
       }
     } else {
@@ -56,6 +68,7 @@ const App = () => {
       }
     }
   };
+
   const handleEditStudent = (id) => {
     const std = students.find((student) => student.id === id);
     setFormData({
@@ -65,6 +78,15 @@ const App = () => {
       city: std.city,
     });
     setEditText(true);
+  };
+
+  const handleStudentAge = (id) => {
+    const std = students.find((s) => s.id === id);
+    setFormData({
+      id: std.id,
+      age: std.age,
+    });
+    setEditAge(true);
   };
 
   const getAllStudents = () => {
@@ -90,7 +112,7 @@ const App = () => {
   const handleDeleteStudent = (id) => {
     axios
       .delete(`${import.meta.env.VITE_API_URL}/api/students/${id}`)
-      .then((res) => {
+      .then(() => {
         console.log("Student Deleted");
         getAllStudents();
       })
@@ -119,6 +141,7 @@ const App = () => {
                   type="text"
                   placeholder="Student Name"
                   required
+                  disabled={editAge}
                   className="w-full p-3 outline-none"
                 />
                 <h2 className="absolute top-4 right-4">
@@ -148,6 +171,7 @@ const App = () => {
                   type="text"
                   placeholder="City"
                   required
+                  disabled={editAge}
                   className="w-full p-3 outline-none"
                 />
                 <h2 className="absolute top-4 right-4">
@@ -189,6 +213,7 @@ const App = () => {
                       id={id}
                       handleDeleteStudent={handleDeleteStudent}
                       handleEditStudent={handleEditStudent}
+                      handleStudentAge={handleStudentAge}
                     />
                   );
                 })}
